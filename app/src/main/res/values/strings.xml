@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My City</string>
+    <string name="menu_my_city">Мой город</string>
+    <string name="menu_my_reviews">Мои отзывы</string>
+    <string name="menu_my_profile">Мой профиль</string>
+    <string name="places">Места</string>
+    <string name="critics">Популярные критики</string>
+</resources>
