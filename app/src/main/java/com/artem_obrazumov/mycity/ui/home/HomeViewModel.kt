@@ -6,10 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artem_obrazumov.mycity.models.PlaceModel
 import com.artem_obrazumov.mycity.models.UserModel
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -18,11 +15,19 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-class HomeViewModel() : ViewModel() {
+class HomeViewModel : ViewModel() {
+    var cityName : String = "0"
+    var initialized : Boolean = false
 
-    @ExperimentalCoroutinesApi
-    private fun getPopularCritics(cityID : String) : Flow<MutableList<UserModel?>> {
-        val reference = FirebaseDatabase.getInstance().getReference("users")
+    private val _criticsList = MutableLiveData<MutableList<UserModel?>>()
+    val criticsList: LiveData<MutableList<UserModel?>> = _criticsList
+
+    private val _placesList = MutableLiveData<MutableList<PlaceModel?>>()
+    val placesList: LiveData<MutableList<PlaceModel?>> = _placesList
+
+    private fun getPopularCritics(cityName : String) : Flow<MutableList<UserModel?>> {
+        val reference = FirebaseDatabase.getInstance().getReference("Users")
+        val query : Query = reference.orderByChild("cityName").equalTo(cityName)
         val critics : MutableList<UserModel?> = ArrayList()
 
         return callbackFlow {
@@ -38,39 +43,51 @@ class HomeViewModel() : ViewModel() {
 
                 override fun onCancelled(error: DatabaseError) {}
             }
-            reference.addListenerForSingleValueEvent(listener)
+            query.addListenerForSingleValueEvent(listener)
 
             awaitClose{}
         }
     }
 
-    private fun getPopularPlaces(cityID : String) : MutableList<PlaceModel> {
-        val places : MutableList<PlaceModel> = ArrayList()
-        places.add(PlaceModel (title = "1", address = "dfsdfsdfsdf", description = "descfgdfgsdfgdsfgdfg", photos = arrayListOf("one")) )
-        places.add(PlaceModel (title = "2", address = "dfsdfsdfsdf", description = "descfgdfgsdfgdsfgdfg", rating = 2f, photos = arrayListOf("one")) )
-        return places
-    }
+    private fun getPopularPlaces(cityName : String) : Flow<MutableList<PlaceModel?>> {
+        val reference = FirebaseDatabase.getInstance().getReference("Places")
+        val query : Query = reference.orderByChild("cityName").equalTo(cityName)
+        val places : MutableList<PlaceModel?> = ArrayList()
 
-    private val _criticsList = MutableLiveData<MutableList<UserModel?>>()
+        return callbackFlow {
+            val listener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot : DataSnapshot in dataSnapshot.children) {
+                        val place: PlaceModel? = snapshot.getValue(PlaceModel::class.java)
+                        places.add(place)
+                    }
+                    offer(places)
+                    close()
+                }
 
-    val criticsList: LiveData<MutableList<UserModel?>> = _criticsList
-
-    private val _placesList = MutableLiveData<MutableList<PlaceModel>>().apply {
-        value = getPopularPlaces("0")
-    }
-    val placesList: LiveData<MutableList<PlaceModel>> = _placesList
-
-
-
-    fun getData() {
-        viewModelScope.launch {
-            getPopularCritics("00").collect { list ->
-                _criticsList.value = list
+                override fun onCancelled(error: DatabaseError) {}
             }
+            query.addListenerForSingleValueEvent(listener)
+
+            awaitClose{}
         }
     }
 
-    init {
-        getData()
+    fun getData() {
+        viewModelScope.launch {
+            getPopularPlaces(cityName).collect { placesList ->
+                _placesList.value = placesList
+            }
+
+            getPopularCritics(cityName).collect { criticsList ->
+                _criticsList.value = criticsList
+            }
+
+            onDataReceived()
+        }
+    }
+
+    private fun onDataReceived() {
+        initialized = true
     }
 }

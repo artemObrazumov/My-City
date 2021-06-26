@@ -26,8 +26,20 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_my_profile"
         android:name="com.artem_obrazumov.mycity.ui.profile.ProfileFragment"
         android:label="@string/menu_my_profile"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.artem_obrazumov.mycity.ui.profile.ProfileFragment"
+        android:label=""
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_unlogged_profile"
+        android:name="com.artem_obrazumov.mycity.ui.profile.UnloggedProfileFragment"
+        android:label="@string/menu_my_profile"
+        tools:layout="@layout/fragment_unlogged_profile"/>
 </navigation>

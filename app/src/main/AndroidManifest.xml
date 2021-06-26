@@ -10,14 +10,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCity">
         <activity
-            android:name=".activities.MainActivity"
-            android:label="@string/app_name">
+            android:name="com.artem_obrazumov.mycity.ui.activities.citySelect.CitySelectActivity"
+            android:theme="@style/Theme.MyCity.NoActionBar"/>
+        <activity
+            android:name="com.artem_obrazumov.mycity.ui.activities.WelcomeActivity"
+            android:theme="@style/Theme.MyCity.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.artem_obrazumov.mycity.ui.activities.MainActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.artem_obrazumov.mycity.ui.activities.authorization.AuthorizationActivity"
+            android:theme="@style/Theme.MyCity.NoActionBar"/>
     </application>
 
 </manifest>

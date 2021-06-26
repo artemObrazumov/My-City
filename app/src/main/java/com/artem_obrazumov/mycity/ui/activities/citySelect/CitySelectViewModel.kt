@@ -1,10 +1,9 @@
-package com.artem_obrazumov.mycity.ui.profile
+package com.artem_obrazumov.mycity.ui.activities.citySelect
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.artem_obrazumov.mycity.models.UserModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -17,18 +16,21 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-class ProfileViewModel : ViewModel() {
-    private val _userData = MutableLiveData<UserModel?>()
-    var userData: LiveData<UserModel?> = _userData
+class CitySelectViewModel : ViewModel() {
+    private val _citiesList = MutableLiveData<MutableList<String?>>()
+    val citiesList: LiveData<MutableList<String?>> = _citiesList
 
-    private fun getUserData(userId: String) : Flow<UserModel?> {
-        val reference = FirebaseDatabase.getInstance().getReference("Users/${userId}")
+    private fun getCitiesList() : Flow<MutableList<String?>> {
+        val reference = FirebaseDatabase.getInstance().getReference("Cities")
+        val cities : MutableList<String?> = ArrayList()
 
         return callbackFlow {
             val listener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val user = dataSnapshot.getValue(UserModel::class.java)
-                    offer(user)
+                    for (snapshot : DataSnapshot in dataSnapshot.children) {
+                        cities.add(snapshot.key)
+                    }
+                    offer(cities)
                     close()
                 }
 
@@ -40,11 +42,15 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    fun getData(userId: String) {
+    private fun getData() {
         viewModelScope.launch {
-            getUserData(userId).collect {
-                _userData.value = it
+            getCitiesList().collect { citiesList ->
+                _citiesList.value = citiesList
             }
         }
+    }
+
+    init {
+        getData()
     }
 }

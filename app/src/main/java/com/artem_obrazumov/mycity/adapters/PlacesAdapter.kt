@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.models.PlaceModel
-import com.artem_obrazumov.mycity.models.UserModel
 import com.bumptech.glide.Glide
 import java.lang.Exception
 
@@ -41,7 +40,7 @@ class PlacesAdapter(): RecyclerView.Adapter<PlacesAdapter.ViewHolder>() {
         val currentPlace : PlaceModel = dataSet[position]
         viewHolder.placeTitle.text = currentPlace.title
         viewHolder.placeDescription.text = currentPlace.description
-        viewHolder.placeRating.rating = currentPlace.rating.toFloat()
+        viewHolder.placeRating.rating = currentPlace.ratingScore.toFloat()
 
         try {
             val context : Context = viewHolder.placeImage.context
