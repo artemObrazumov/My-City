@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.databinding.FragmentUnloggedProfileBinding
-import com.artem_obrazumov.mycity.isLogged
-import com.artem_obrazumov.mycity.ui.activities.authorization.AuthorizationActivity
-import com.artem_obrazumov.mycity.ui.activities.registration.RegistrationActivity
+import com.artem_obrazumov.mycity.utils.isLogged
+import com.artem_obrazumov.mycity.ui.authorization.AuthorizationActivity
+import com.artem_obrazumov.mycity.ui.registration.RegistrationActivity
 import com.google.firebase.auth.FirebaseAuth
 
 

@@ -1,2 +1,2 @@
--keep public class com.artem_obrazumov.mycity.GlideModule extends com.bumptech.glide.module.AppGlideModule
+-keep public class com.artem_obrazumov.mycity.utils.GlideModule extends com.bumptech.glide.module.AppGlideModule
 -keep class com.bumptech.glide.GeneratedAppGlideModuleImpl

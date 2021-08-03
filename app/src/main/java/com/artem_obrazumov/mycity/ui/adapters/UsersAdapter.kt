@@ -1,17 +1,16 @@
-package com.artem_obrazumov.mycity.adapters
+package com.artem_obrazumov.mycity.ui.adapters
 
 import android.content.Context
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.artem_obrazumov.mycity.GlideApp
+import com.artem_obrazumov.mycity.utils.GlideApp
 import com.artem_obrazumov.mycity.R
-import com.artem_obrazumov.mycity.models.UserModel
-import com.artem_obrazumov.mycity.onClick
+import com.artem_obrazumov.mycity.data.models.UserModel
+import com.artem_obrazumov.mycity.utils.onClick
 
 class UsersAdapter(): RecyclerView.Adapter<UsersAdapter.ViewHolder>() {
 

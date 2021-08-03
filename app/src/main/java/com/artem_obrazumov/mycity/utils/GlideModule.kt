@@ -1,4 +1,4 @@
-package com.artem_obrazumov.mycity
+package com.artem_obrazumov.mycity.utils
 
 import android.content.Context
 import android.util.Log

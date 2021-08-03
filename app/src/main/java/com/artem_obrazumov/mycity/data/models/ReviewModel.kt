@@ -1,4 +1,4 @@
-package com.artem_obrazumov.mycity.models
+package com.artem_obrazumov.mycity.data.models
 
 data class ReviewModel(
     var id : String = "",

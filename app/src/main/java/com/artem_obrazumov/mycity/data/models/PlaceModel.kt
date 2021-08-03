@@ -1,4 +1,4 @@
-package com.artem_obrazumov.mycity.models;
+package com.artem_obrazumov.mycity.data.models;
 
 // Класс места
 data class PlaceModel(

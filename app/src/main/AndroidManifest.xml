@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCity">
         <activity
-            android:name="com.artem_obrazumov.mycity.ui.activities.citySelect.CitySelectActivity"
+            android:name="com.artem_obrazumov.mycity.ui.citySelect.CitySelectActivity"
             android:theme="@style/Theme.MyCity.NoActionBar"/>
         <activity
-            android:name="com.artem_obrazumov.mycity.ui.activities.WelcomeActivity"
+            android:name="com.artem_obrazumov.mycity.ui.welcome.WelcomeActivity"
             android:theme="@style/Theme.MyCity.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,10 +22,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.artem_obrazumov.mycity.ui.activities.MainActivity"
+            android:name="com.artem_obrazumov.mycity.ui.main.MainActivity"
             android:label="@string/app_name" />
         <activity
-            android:name="com.artem_obrazumov.mycity.ui.activities.authorization.AuthorizationActivity"
+            android:name="com.artem_obrazumov.mycity.ui.authorization.AuthorizationActivity"
             android:theme="@style/Theme.MyCity.NoActionBar"/>
     </application>
 

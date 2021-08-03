@@ -1,4 +1,4 @@
-package com.artem_obrazumov.mycity.adapters
+package com.artem_obrazumov.mycity.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.artem_obrazumov.mycity.R
-import com.artem_obrazumov.mycity.models.PlaceModel
+import com.artem_obrazumov.mycity.data.models.PlaceModel
 import com.bumptech.glide.Glide
 import java.lang.Exception
 

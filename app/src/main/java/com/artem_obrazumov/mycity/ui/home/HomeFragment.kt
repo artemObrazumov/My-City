@@ -12,12 +12,14 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.artem_obrazumov.mycity.R
-import com.artem_obrazumov.mycity.adapters.AdapterInterfaces
-import com.artem_obrazumov.mycity.adapters.PlacesAdapter
-import com.artem_obrazumov.mycity.adapters.UsersAdapter
+import com.artem_obrazumov.mycity.ui.adapters.AdapterInterfaces
+import com.artem_obrazumov.mycity.ui.adapters.PlacesAdapter
+import com.artem_obrazumov.mycity.ui.adapters.UsersAdapter
 import com.artem_obrazumov.mycity.databinding.FragmentHomeBinding
-import com.artem_obrazumov.mycity.models.PlaceModel
-import com.artem_obrazumov.mycity.models.UserModel
+import com.artem_obrazumov.mycity.data.models.PlaceModel
+import com.artem_obrazumov.mycity.data.models.UserModel
+import com.artem_obrazumov.mycity.data.repository.DataRepository
+import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -31,7 +33,8 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this, ViewModelFactory(DataRepository()))
+            .get(HomeViewModel::class.java)
         if (!viewModel.initialized) {
             viewModel.cityName =
                 activity?.getSharedPreferences("user_data", Context.MODE_PRIVATE)

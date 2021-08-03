@@ -1,4 +1,4 @@
-package com.artem_obrazumov.mycity.adapters
+package com.artem_obrazumov.mycity.ui.adapters
 
 class AdapterInterfaces {
     interface UsersAdapterEventListener {

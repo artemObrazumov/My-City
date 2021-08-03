@@ -1,4 +1,4 @@
-package com.artem_obrazumov.mycity.ui.activities.citySelect
+package com.artem_obrazumov.mycity.ui.citySelect
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

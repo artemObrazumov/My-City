@@ -1,27 +1,22 @@
-package com.artem_obrazumov.mycity.ui.activities.authorization
+package com.artem_obrazumov.mycity.ui.authorization
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.artem_obrazumov.mycity.databinding.ActivityAuthorizationBinding
-import com.artem_obrazumov.mycity.getTrimmedText
+import com.artem_obrazumov.mycity.utils.getTrimmedText
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class AuthorizationActivity : AppCompatActivity() {
 
-    // ViewModel
     private lateinit var viewModel: AuthorizationViewModel
-
-    // Binding
     private lateinit var binding: ActivityAuthorizationBinding
-
-    // Firebase
     private lateinit var auth: FirebaseAuth
-
-    // Local variables
     private var isFinished = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,8 +61,7 @@ class AuthorizationActivity : AppCompatActivity() {
         showLoading()
         val email = binding.inputEmail.getTrimmedText()
         val password = binding.inputPassword.getTrimmedText()
-        viewModel.authorizeUser(auth, email, password,
-            OnCompleteListener { result -> manageAuthorizationTaskResult(result) })
+        viewModel.authorizeUser(email, password)
     }
 
     // Processing task result to invoke some action

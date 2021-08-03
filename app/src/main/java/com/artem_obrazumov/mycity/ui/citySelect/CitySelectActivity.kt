@@ -1,4 +1,4 @@
-package com.artem_obrazumov.mycity.ui.activities.citySelect
+package com.artem_obrazumov.mycity.ui.citySelect
 
 import android.app.AlertDialog
 import android.content.Context
@@ -10,9 +10,8 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.databinding.ActivityCitySelectBinding
-import com.artem_obrazumov.mycity.ui.activities.MainActivity
+import com.artem_obrazumov.mycity.ui.main.MainActivity
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -20,18 +19,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 class CitySelectActivity : AppCompatActivity() {
 
-    // ViewModel
     private lateinit var viewModel: CitySelectViewModel
-
-    // Binding
     private lateinit var binding : ActivityCitySelectBinding
-
-    // Firebase
     private lateinit var database : FirebaseDatabase
-
-    // Cities List
     private lateinit var citiesList : ArrayList<String>
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         database = FirebaseDatabase.getInstance()

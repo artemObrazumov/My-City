@@ -1,14 +1,13 @@
-package com.artem_obrazumov.mycity.ui.activities.registration
+package com.artem_obrazumov.mycity.ui.registration
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.databinding.ActivityRegistrationBinding
-import com.artem_obrazumov.mycity.getTrimmedText
-import com.artem_obrazumov.mycity.getUserCity
-import com.artem_obrazumov.mycity.models.UserModel
-import com.artem_obrazumov.mycity.ui.activities.authorization.AuthorizationViewModel
+import com.artem_obrazumov.mycity.utils.getUserCity
+import com.artem_obrazumov.mycity.data.models.UserModel
+import com.artem_obrazumov.mycity.utils.getTrimmedText
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -76,8 +75,7 @@ class RegistrationActivity : AppCompatActivity() {
         if (isValid()) {
             showLoading()
             fillUserFields(user)
-            viewModel.registerUser(auth, user.email, binding.inputPassword.getTrimmedText(),
-                    OnCompleteListener { result -> manageRegistrationTaskResult(result) })
+            viewModel.registerUser(user.email, binding.inputPassword.getTrimmedText())
         }
     }
 
