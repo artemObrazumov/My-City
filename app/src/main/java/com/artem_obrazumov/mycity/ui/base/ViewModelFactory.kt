@@ -2,19 +2,38 @@ package com.artem_obrazumov.mycity.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.artem_obrazumov.mycity.data.repository.AuthenticationRepository
 import com.artem_obrazumov.mycity.data.repository.DataRepository
+import com.artem_obrazumov.mycity.ui.authorization.AuthorizationViewModel
+import com.artem_obrazumov.mycity.ui.citySelect.CitySelectViewModel
 import com.artem_obrazumov.mycity.ui.home.HomeViewModel
 import com.artem_obrazumov.mycity.ui.profile.ProfileViewModel
+import com.artem_obrazumov.mycity.ui.registration.RegistrationViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
-class ViewModelFactory(private val repository: DataRepository) : ViewModelProvider.Factory {
+@Suppress("UNCHECKED_CAST")
+class ViewModelFactory(
+    private val dataRepository: DataRepository? = null,
+    private val authRepository: AuthenticationRepository? = null
+    ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return HomeViewModel(repository) as T
-        }
-        else if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
-            return ProfileViewModel(repository) as T
+        when {
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                return HomeViewModel(dataRepository!!) as T
+            }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                return ProfileViewModel(dataRepository!!) as T
+            }
+            modelClass.isAssignableFrom(AuthorizationViewModel::class.java) -> {
+                return AuthorizationViewModel(authRepository!!) as T
+            }
+            modelClass.isAssignableFrom(CitySelectViewModel::class.java) -> {
+                return CitySelectViewModel(dataRepository!!) as T
+            }
+            modelClass.isAssignableFrom(RegistrationViewModel::class.java) -> {
+                return RegistrationViewModel(dataRepository!!, authRepository!!) as T
+            }
         }
         throw IllegalArgumentException("Unknown class name")
     }

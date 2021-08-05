@@ -1,4 +1,4 @@
-package com.artem_obrazumov.mycity.ui.profile
+package com.artem_obrazumov.mycity.ui.profileEdit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

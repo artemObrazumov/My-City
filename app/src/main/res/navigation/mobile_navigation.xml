@@ -29,13 +29,35 @@
         android:id="@+id/navigation_my_profile"
         android:name="com.artem_obrazumov.mycity.ui.profile.ProfileFragment"
         android:label="@string/menu_my_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+
+        <action
+            android:id="@+id/refresh"
+            app:destination="@id/navigation_my_profile"
+            app:popUpTo="@+id/navigation_my_profile"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.artem_obrazumov.mycity.ui.profile.ProfileFragment"
         android:label=""
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+
+        <action
+            android:id="@+id/refresh"
+            app:destination="@id/navigation_profile"
+            app:popUpTo="@+id/navigation_profile"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_edit_profile"
+        android:name="com.artem_obrazumov.mycity.ui.profileEdit.ProfileEditFragment"
+        android:label="@string/editing_profile"
+        tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
         android:id="@+id/navigation_unlogged_profile"

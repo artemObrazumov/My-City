@@ -33,7 +33,8 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(this, ViewModelFactory(DataRepository()))
+        viewModel = ViewModelProvider(this,
+            ViewModelFactory(dataRepository = DataRepository()))
             .get(HomeViewModel::class.java)
         if (!viewModel.initialized) {
             viewModel.cityName =
@@ -78,7 +79,7 @@ class HomeFragment : Fragment() {
                 override fun onUserClicked(userId: String) {
                     val bundle = Bundle()
                     bundle.putString("userId", userId)
-                    view?.findNavController()?.navigate(R.id.navigation_profile, bundle)
+                    view?.findNavController()?.navigate(R.id.navigation_my_profile, bundle)
                 }
             }
             binding.criticsList.layoutManager = LinearLayoutManager(context)

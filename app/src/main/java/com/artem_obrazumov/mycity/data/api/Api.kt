@@ -1,15 +1,17 @@
-package com.artem_obrazumov.mycity.data.api;
+package com.artem_obrazumov.mycity.data.api
 
 import com.artem_obrazumov.mycity.data.models.PlaceModel
 import com.artem_obrazumov.mycity.data.models.UserModel
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
+import java.lang.Exception
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @ExperimentalCoroutinesApi
 class Api {
@@ -17,108 +19,77 @@ class Api {
         private val database = FirebaseDatabase.getInstance()
         private val auth = FirebaseAuth.getInstance()
 
-        override fun getPopularCritics(cityName: String): Flow<MutableList<UserModel?>> {
-            val reference = database.getReference("Users")
-            val query: Query = reference.orderByChild("cityName").equalTo(cityName)
-            val critics: MutableList<UserModel?> = ArrayList()
-
-            return callbackFlow {
-                val listener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (snapshot: DataSnapshot in dataSnapshot.children) {
-                            val user: UserModel? = snapshot.getValue(UserModel::class.java)
-                            critics.add(user)
-                        }
-                        offer(critics)
-                        close()
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {}
+        override suspend fun getPopularCritics(cityName: String): MutableList<UserModel> {
+            val critics: MutableList<UserModel> = ArrayList()
+            try {
+                val reference = database.getReference("Users")
+                val query: Query = reference.orderByChild("cityName").equalTo(cityName)
+                val dataSnapshot = query.get().await()
+                for (snapshot in dataSnapshot.children) {
+                    val critic = snapshot.getValue(UserModel::class.java)!!
+                    critics.add(critic)
                 }
-                query.addListenerForSingleValueEvent(listener)
-
-                awaitClose {}
+            } catch (e: Exception) {
+                critics.clear()
             }
+            return critics
         }
 
-        override fun getPopularPlaces(cityName: String): Flow<MutableList<PlaceModel?>> {
-            val reference = database.getReference("Places")
-            val query: Query = reference.orderByChild("cityName").equalTo(cityName)
-            val places: MutableList<PlaceModel?> = ArrayList()
-
-            return callbackFlow {
-                val listener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (snapshot: DataSnapshot in dataSnapshot.children) {
-                            val place: PlaceModel? = snapshot.getValue(PlaceModel::class.java)
-                            places.add(place)
-                        }
-                        offer(places)
-                        close()
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {}
+        override suspend fun getPopularPlaces(cityName: String): MutableList<PlaceModel> {
+            val places: MutableList<PlaceModel> = ArrayList()
+            try {
+                val reference = database.getReference("Places")
+                val query = reference.orderByChild("cityName").equalTo(cityName)
+                val dataSnapshot = query.get().await()
+                for (snapshot in dataSnapshot.children) {
+                    val place = snapshot.getValue(PlaceModel::class.java)!!
+                    places.add(place)
                 }
-                query.addListenerForSingleValueEvent(listener)
-
-                awaitClose {}
+            } catch (e: Exception) {
+                places.clear()
             }
+            return places
         }
 
-        override fun getUserData(userId: String) : Flow<UserModel?> {
-            val reference = database.getReference("Users/${userId}")
+        override suspend fun getUserData(userId: String): UserModel =
+            database.getReference("Users/${userId}").get().await()
+                .getValue(UserModel::class.java)!!
 
-            return callbackFlow {
-                val listener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val user = dataSnapshot.getValue(UserModel::class.java)
-                        offer(user)
-                        close()
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {}
+        override suspend fun getCitiesList() : MutableList<String> {
+            val cities: MutableList<String> = ArrayList()
+            try {
+                val reference = FirebaseDatabase.getInstance().getReference("Cities")
+                val dataSnapshot = reference.get().await()
+                for (snapshot in dataSnapshot.children) {
+                    cities.add(snapshot.key!!)
                 }
-                reference.addListenerForSingleValueEvent(listener)
-
-                awaitClose{}
+            } catch (e: Exception) {
+                cities.clear()
             }
+            return cities
         }
 
 
-        override fun saveUserdataToDatabase(user: UserModel) {
+        override suspend fun saveUserdataToDatabase(user: UserModel) {
             val reference = database.getReference("Users/${user.authId}")
             reference.setValue(user)
         }
 
 
-        override fun registerUser(
+        override suspend fun registerUser(
             email: String,
             password: String
-        ) : Flow<Task<AuthResult>> {
-            return callbackFlow {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        offer(task)
-                        close()
-                    }
-
-                awaitClose{}
-            }
+        ) : Task<AuthResult> = suspendCoroutine { continuation ->
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task -> continuation.resume(task) }
         }
 
-        override fun authorizeUser(
+        override suspend fun authorizeUser(
             email: String,
             password: String
-        ) : Flow<Task<AuthResult>> {
-            return callbackFlow {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task: Task<AuthResult> ->
-                        offer(task)
-                        close()
-                    }
-
-                awaitClose{}
-            }
+        ) : Task<AuthResult> = suspendCoroutine { continuation ->
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task -> continuation.resume(task) }
         }
     }
 }

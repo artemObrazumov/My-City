@@ -27,6 +27,9 @@
         <activity
             android:name="com.artem_obrazumov.mycity.ui.authorization.AuthorizationActivity"
             android:theme="@style/Theme.MyCity.NoActionBar"/>
+        <activity
+            android:name="com.artem_obrazumov.mycity.ui.registration.RegistrationActivity"
+            android:theme="@style/Theme.MyCity.NoActionBar"/>
     </application>
 
 </manifest>

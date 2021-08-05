@@ -16,16 +16,12 @@ import com.artem_obrazumov.mycity.utils.isLogged
 import com.artem_obrazumov.mycity.ui.authorization.AuthorizationActivity
 import com.artem_obrazumov.mycity.ui.registration.RegistrationActivity
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
+@ExperimentalCoroutinesApi
 class UnloggedProfileFragment : Fragment() {
-    // Binding
     private lateinit var binding : FragmentUnloggedProfileBinding
-
-    // ActionBar
     private lateinit var actionBar : ActionBar
-
-    // Firebase
     private lateinit var auth : FirebaseAuth
 
     @SuppressLint("RestrictedApi")

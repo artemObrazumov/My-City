@@ -2,39 +2,40 @@ package com.artem_obrazumov.mycity.ui.registration
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.databinding.ActivityRegistrationBinding
 import com.artem_obrazumov.mycity.utils.getUserCity
 import com.artem_obrazumov.mycity.data.models.UserModel
+import com.artem_obrazumov.mycity.data.repository.AuthenticationRepository
+import com.artem_obrazumov.mycity.data.repository.DataRepository
+import com.artem_obrazumov.mycity.ui.authorization.AuthorizationViewModel
+import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
 import com.artem_obrazumov.mycity.utils.getTrimmedText
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class RegistrationActivity : AppCompatActivity() {
-
-    // ViewModel
     private lateinit var viewModel: RegistrationViewModel
-
-    // Binding
     private lateinit var binding: ActivityRegistrationBinding
-
-    // User object
     private val user: UserModel = UserModel()
-
-    // Firebase
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
-
-    // Local variables
     private var isFinished = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(RegistrationViewModel::class.java)
+        viewModel = ViewModelProvider(this,
+            ViewModelFactory(dataRepository = DataRepository(),
+                authRepository = AuthenticationRepository()))
+            .get(RegistrationViewModel::class.java)
+
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
@@ -76,6 +77,9 @@ class RegistrationActivity : AppCompatActivity() {
             showLoading()
             fillUserFields(user)
             viewModel.registerUser(user.email, binding.inputPassword.getTrimmedText())
+            viewModel.registrationResult.observe(this, Observer { task ->
+                manageRegistrationTaskResult(task)
+            })
         }
     }
 
@@ -117,7 +121,7 @@ class RegistrationActivity : AppCompatActivity() {
     private fun manageRegistrationTaskResult(task: Task<AuthResult>) {
         if (task.isSuccessful) {
             user.authId = auth.currentUser?.uid.toString()
-            viewModel.saveUserdataToDatabase(database, user)
+            viewModel.saveUserdataToDatabase(user)
             onUserdataSaved()
         } else {
             task.exception?.printStackTrace()

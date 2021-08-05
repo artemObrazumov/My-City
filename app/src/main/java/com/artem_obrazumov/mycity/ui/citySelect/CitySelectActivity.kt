@@ -10,7 +10,10 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.artem_obrazumov.mycity.data.repository.DataRepository
 import com.artem_obrazumov.mycity.databinding.ActivityCitySelectBinding
+import com.artem_obrazumov.mycity.ui.authorization.AuthorizationViewModel
+import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
 import com.artem_obrazumov.mycity.ui.main.MainActivity
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +29,9 @@ class CitySelectActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         database = FirebaseDatabase.getInstance()
-        viewModel = ViewModelProvider(this).get(CitySelectViewModel::class.java)
+        viewModel = ViewModelProvider(this,
+            ViewModelFactory(dataRepository = DataRepository()))
+            .get(CitySelectViewModel::class.java)
 
         super.onCreate(savedInstanceState)
         binding = ActivityCitySelectBinding.inflate(layoutInflater)
@@ -36,8 +41,10 @@ class CitySelectActivity : AppCompatActivity() {
             startDisappearAnimation()
             saveData()
 
-            Handler(Looper.getMainLooper()).postDelayed(Runnable {
-                startActivity( Intent(this@CitySelectActivity, MainActivity::class.java) )
+            Handler(Looper.getMainLooper()).postDelayed({
+                startActivity(
+                    Intent(this@CitySelectActivity, MainActivity::class.java)
+                )
             }, 1000)
         }
 

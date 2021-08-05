@@ -1,9 +1,16 @@
 package com.artem_obrazumov.mycity.ui.authorization
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.artem_obrazumov.mycity.R
+import com.artem_obrazumov.mycity.data.repository.AuthenticationRepository
+import com.artem_obrazumov.mycity.data.repository.DataRepository
 import com.artem_obrazumov.mycity.databinding.ActivityAuthorizationBinding
+import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
+import com.artem_obrazumov.mycity.ui.profile.ProfileViewModel
 import com.artem_obrazumov.mycity.utils.getTrimmedText
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -13,7 +20,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 class AuthorizationActivity : AppCompatActivity() {
-
     private lateinit var viewModel: AuthorizationViewModel
     private lateinit var binding: ActivityAuthorizationBinding
     private lateinit var auth: FirebaseAuth
@@ -21,7 +27,10 @@ class AuthorizationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AuthorizationViewModel::class.java)
+        viewModel = ViewModelProvider(this,
+            ViewModelFactory(authRepository = AuthenticationRepository()))
+            .get(AuthorizationViewModel::class.java)
+
         auth = FirebaseAuth.getInstance()
         binding = ActivityAuthorizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -62,6 +71,9 @@ class AuthorizationActivity : AppCompatActivity() {
         val email = binding.inputEmail.getTrimmedText()
         val password = binding.inputPassword.getTrimmedText()
         viewModel.authorizeUser(email, password)
+        viewModel.authorizationResult.observe(this, Observer { task ->
+            manageAuthorizationTaskResult(task)
+        })
     }
 
     // Processing task result to invoke some action
@@ -71,6 +83,11 @@ class AuthorizationActivity : AppCompatActivity() {
         } else {
             task.exception?.printStackTrace()
             showRegistrationForm()
+            Toast.makeText(
+                applicationContext,
+                getString(R.string.authorization_error),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
