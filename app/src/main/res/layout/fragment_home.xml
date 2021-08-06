@@ -49,15 +49,27 @@
                     app:layout_constraintStart_toStartOf="@+id/places_list"
                     app:layout_constraintTop_toTopOf="@+id/places_list" />
 
-                <TextView
+                <LinearLayout
                     android:id="@+id/critics_label"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/critics"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/places_list" />
+                    app:layout_constraintTop_toBottomOf="@+id/places_list">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/popular_users"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/show_all"
+                        android:textColor="@color/green_500"
+                        android:textSize="18sp"/>
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/critics_list"

@@ -12,9 +12,27 @@
         android:layout_height="match_parent">
 
         <EditText
+            android:id="@+id/input_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/input_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/input_nickname" />
+        <EditText
+            android:id="@+id/input_surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/input_name" />
+
+        <Button
+            android:id="@+id/change_city_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сменить город"
+            app:layout_constraintTop_toBottomOf="@+id/input_surname" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,13 +7,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.databinding.ActivityRegistrationBinding
 import com.artem_obrazumov.mycity.utils.getUserCity
-import com.artem_obrazumov.mycity.data.models.UserModel
+import com.artem_obrazumov.mycity.data.models.User
 import com.artem_obrazumov.mycity.data.repository.AuthenticationRepository
 import com.artem_obrazumov.mycity.data.repository.DataRepository
-import com.artem_obrazumov.mycity.ui.authorization.AuthorizationViewModel
 import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
 import com.artem_obrazumov.mycity.utils.getTrimmedText
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -24,7 +22,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class RegistrationActivity : AppCompatActivity() {
     private lateinit var viewModel: RegistrationViewModel
     private lateinit var binding: ActivityRegistrationBinding
-    private val user: UserModel = UserModel()
+    private val user: User = User()
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
     private var isFinished = false
@@ -110,7 +108,7 @@ class RegistrationActivity : AppCompatActivity() {
     }
 
     // Filling fields in user object
-    private fun fillUserFields(user: UserModel) {
+    private fun fillUserFields(user: User) {
         user.name = "${binding.inputName.getTrimmedText()} ${binding.inputSurname.getTrimmedText()}"
         user.nickName = binding.inputNickname.getTrimmedText()
         user.email = binding.inputEmail.getTrimmedText()

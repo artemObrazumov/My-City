@@ -1,6 +1,6 @@
 package com.artem_obrazumov.mycity.data.models
 
-data class ReviewModel(
+data class Review(
     var id : String = "",
     var authorId : String = "",
     var placeId : String = "",

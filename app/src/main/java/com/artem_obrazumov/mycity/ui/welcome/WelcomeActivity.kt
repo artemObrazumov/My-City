@@ -6,11 +6,11 @@ import android.os.Handler
 import android.os.Looper
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
-import com.artem_obrazumov.mycity.ui.welcome.WelcomeActivity.WelcomeScreenConstants.WELCOME_SCREEN_DURATION
 import com.artem_obrazumov.mycity.databinding.ActivityWelcomeBinding
-import com.artem_obrazumov.mycity.utils.getUserCity
 import com.artem_obrazumov.mycity.ui.citySelect.CitySelectActivity
-import com.artem_obrazumov.mycity.ui.main.MainActivity
+import com.artem_obrazumov.mycity.ui.instructions.InstructionsActivity
+import com.artem_obrazumov.mycity.ui.welcome.WelcomeActivity.WelcomeScreenConstants.WELCOME_SCREEN_DURATION
+import com.artem_obrazumov.mycity.utils.getUserCity
 import com.google.firebase.database.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -69,7 +69,8 @@ class WelcomeActivity : AppCompatActivity() {
                     val intent : Intent = if (!snapshot.exists()) {
                         Intent(applicationContext, CitySelectActivity::class.java)
                     } else {
-                        Intent(applicationContext, MainActivity::class.java)
+                        Intent(applicationContext, InstructionsActivity::class.java)
+                        // TODO: mainAct
                     }
                     startActivity(intent)
                 }

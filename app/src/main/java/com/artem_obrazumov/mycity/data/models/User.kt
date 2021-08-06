@@ -1,7 +1,7 @@
 package com.artem_obrazumov.mycity.data.models
 
 // Класс пользователя
-data class UserModel(
+data class User(
     var authId: String = "",
     var avatar: String = "",
     var name: String = "",
@@ -15,4 +15,7 @@ data class UserModel(
             return "User"
         }
     }
+
+    fun getFirstName() = name.split(" ")[0]
+    fun getSurname() =   name.split(" ")[1]
 }

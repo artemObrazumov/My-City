@@ -1,5 +1,6 @@
 package com.artem_obrazumov.mycity.ui.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,15 +10,18 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.artem_obrazumov.mycity.R
-import com.artem_obrazumov.mycity.data.models.PlaceModel
+import com.artem_obrazumov.mycity.data.models.Attachment
+import com.artem_obrazumov.mycity.data.models.Place
 import com.bumptech.glide.Glide
 import java.lang.Exception
+import java.lang.IllegalArgumentException
 
 class PlacesAdapter(): RecyclerView.Adapter<PlacesAdapter.ViewHolder>() {
 
-    private var dataSet: ArrayList<PlaceModel> = ArrayList()
+    private var dataSet: ArrayList<Place> = ArrayList()
 
-    fun setDataSet(placesList: ArrayList<PlaceModel>) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun setDataSet(placesList: ArrayList<Place>) {
         this.dataSet = placesList
         notifyDataSetChanged()
     }
@@ -37,14 +41,19 @@ class PlacesAdapter(): RecyclerView.Adapter<PlacesAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val currentPlace : PlaceModel = dataSet[position]
+        val currentPlace : Place = dataSet[position]
         viewHolder.placeTitle.text = currentPlace.title
         viewHolder.placeDescription.text = currentPlace.description
         viewHolder.placeRating.rating = currentPlace.ratingScore.toFloat()
 
         try {
             val context : Context = viewHolder.placeImage.context
-            Glide.with(context).load(currentPlace.photos[0])
+            val firstAttachment = currentPlace.attachment[0]
+            if (firstAttachment.type != Attachment.ATTACHMENT_PHOTO) {
+                throw IllegalArgumentException("First Attachment is not a photo, skip!")
+            }
+
+            Glide.with(context).load(firstAttachment.link)
                 .placeholder(R.drawable.default_user_profile_icon).into(viewHolder.placeImage)
         } catch (ignored : Exception) {}
     }

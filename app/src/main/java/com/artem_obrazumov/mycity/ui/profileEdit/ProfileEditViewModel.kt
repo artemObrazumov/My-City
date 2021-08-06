@@ -1,4 +1,4 @@
-package com.artem_obrazumov.mycity.ui.profile
+package com.artem_obrazumov.mycity.ui.profileEdit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,9 +9,9 @@ import com.artem_obrazumov.mycity.data.repository.DataRepository
 import kotlinx.coroutines.*
 
 @ExperimentalCoroutinesApi
-class ProfileViewModel(private val repository: DataRepository) : ViewModel() {
+class ProfileEditViewModel(private val repository: DataRepository) : ViewModel() {
     private val _userData = MutableLiveData<User>()
-    val userData: LiveData<User> = _userData
+    var userData: LiveData<User> = _userData
 
     var initialized = false
 
@@ -24,5 +24,11 @@ class ProfileViewModel(private val repository: DataRepository) : ViewModel() {
 
     private fun onDataReceived() {
         initialized = true
+    }
+
+    fun saveUserData(user: User) {
+        viewModelScope.launch {
+            repository.saveUserdataToDatabase(user)
+        }
     }
 }

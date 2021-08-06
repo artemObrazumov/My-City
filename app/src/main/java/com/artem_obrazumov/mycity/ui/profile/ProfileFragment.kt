@@ -1,7 +1,6 @@
 package com.artem_obrazumov.mycity.ui.profile
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -13,7 +12,7 @@ import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.databinding.FragmentProfileBinding
 import com.artem_obrazumov.mycity.utils.initializeBackPress
 import com.artem_obrazumov.mycity.utils.isLogged
-import com.artem_obrazumov.mycity.data.models.UserModel
+import com.artem_obrazumov.mycity.data.models.User
 import com.artem_obrazumov.mycity.data.repository.DataRepository
 import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
 import com.artem_obrazumov.mycity.utils.setActionBarTitle
@@ -30,7 +29,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var menu: Menu
     private lateinit var userId: String
-    private lateinit var userData: UserModel
+    private lateinit var userData: User
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +40,7 @@ class ProfileFragment : Fragment() {
         viewModel = ViewModelProvider(this,
             ViewModelFactory(dataRepository = DataRepository()))
             .get(ProfileViewModel::class.java)
+        auth = FirebaseAuth.getInstance()
         binding = FragmentProfileBinding.inflate(layoutInflater)
         val root = binding.root
         binding.swipeRefreshLayout.setOnRefreshListener {
@@ -55,7 +55,10 @@ class ProfileFragment : Fragment() {
         super.onStart()
         userId = try {
             requireArguments().getString("userId")!!
-        } catch (e: Exception) { "" }
+        } catch (e: Exception) {
+            if (auth.isLogged()) auth.currentUser?.uid!! else ""
+        }
+        initializeViewModel()
         initializeBackPress()
         checkIfLogged()
     }
@@ -84,11 +87,16 @@ class ProfileFragment : Fragment() {
 
 
     private fun checkIfLogged() {
-        auth = FirebaseAuth.getInstance()
         if (!auth.isLogged() && userId.isEmpty()) {
             Navigation.findNavController(view as View).navigate(R.id.navigation_unlogged_profile)
         } else {
             getUserData()
+        }
+    }
+
+    private fun initializeViewModel() {
+        if (!viewModel.initialized) {
+            viewModel.getUserData(userId)
         }
     }
 
@@ -98,7 +106,6 @@ class ProfileFragment : Fragment() {
             userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
         }
 
-        viewModel.getUserData(userId)
         viewModel.userData.observe(viewLifecycleOwner, Observer { userData ->
             this.userData = userData!!
             binding.progressBar.visibility = View.GONE
@@ -109,8 +116,8 @@ class ProfileFragment : Fragment() {
     }
 
     // Displaying received user data
-    private fun displayUserData(userData: UserModel) {
-        if (auth.uid != userData.authId) {
+    private fun displayUserData(userData: User) {
+        if (auth.currentUser!!.uid != userData.authId) {
             setActionBarTitle(userData.nickName)
         } else {
             setActionBarTitle(getString(R.string.menu_my_profile))

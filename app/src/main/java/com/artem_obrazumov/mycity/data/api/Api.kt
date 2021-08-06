@@ -1,7 +1,8 @@
 package com.artem_obrazumov.mycity.data.api
 
-import com.artem_obrazumov.mycity.data.models.PlaceModel
-import com.artem_obrazumov.mycity.data.models.UserModel
+import com.artem_obrazumov.mycity.data.models.Place
+import com.artem_obrazumov.mycity.data.models.User
+import com.artem_obrazumov.mycity.ui.instructions.models.InstructionsScript
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -19,14 +20,14 @@ class Api {
         private val database = FirebaseDatabase.getInstance()
         private val auth = FirebaseAuth.getInstance()
 
-        override suspend fun getPopularCritics(cityName: String): MutableList<UserModel> {
-            val critics: MutableList<UserModel> = ArrayList()
+        override suspend fun getPopularCritics(cityName: String): MutableList<User> {
+            val critics: MutableList<User> = ArrayList()
             try {
                 val reference = database.getReference("Users")
                 val query: Query = reference.orderByChild("cityName").equalTo(cityName)
                 val dataSnapshot = query.get().await()
                 for (snapshot in dataSnapshot.children) {
-                    val critic = snapshot.getValue(UserModel::class.java)!!
+                    val critic = snapshot.getValue(User::class.java)!!
                     critics.add(critic)
                 }
             } catch (e: Exception) {
@@ -35,14 +36,14 @@ class Api {
             return critics
         }
 
-        override suspend fun getPopularPlaces(cityName: String): MutableList<PlaceModel> {
-            val places: MutableList<PlaceModel> = ArrayList()
+        override suspend fun getPopularPlaces(cityName: String): MutableList<Place> {
+            val places: MutableList<Place> = ArrayList()
             try {
                 val reference = database.getReference("Places")
                 val query = reference.orderByChild("cityName").equalTo(cityName)
                 val dataSnapshot = query.get().await()
                 for (snapshot in dataSnapshot.children) {
-                    val place = snapshot.getValue(PlaceModel::class.java)!!
+                    val place = snapshot.getValue(Place::class.java)!!
                     places.add(place)
                 }
             } catch (e: Exception) {
@@ -51,9 +52,9 @@ class Api {
             return places
         }
 
-        override suspend fun getUserData(userId: String): UserModel =
+        override suspend fun getUserData(userId: String): User =
             database.getReference("Users/${userId}").get().await()
-                .getValue(UserModel::class.java)!!
+                .getValue(User::class.java)!!
 
         override suspend fun getCitiesList() : MutableList<String> {
             val cities: MutableList<String> = ArrayList()
@@ -69,8 +70,16 @@ class Api {
             return cities
         }
 
+        override suspend fun getInstructionScript(): InstructionsScript =
+            try {
+                database.getReference("Instructions_script").get().await()
+                    .getValue(InstructionsScript::class.java)!!
+            } catch (e: Exception) {
+                Defaults.defaultInstruction
+            }
 
-        override suspend fun saveUserdataToDatabase(user: UserModel) {
+
+        override suspend fun saveUserdataToDatabase(user: User) {
             val reference = database.getReference("Users/${user.authId}")
             reference.setValue(user)
         }

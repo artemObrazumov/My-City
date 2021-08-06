@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.artem_obrazumov.mycity.utils.GlideApp
 import com.artem_obrazumov.mycity.R
-import com.artem_obrazumov.mycity.data.models.UserModel
+import com.artem_obrazumov.mycity.data.models.User
 import com.artem_obrazumov.mycity.utils.onClick
 
 class UsersAdapter(): RecyclerView.Adapter<UsersAdapter.ViewHolder>() {
@@ -18,9 +18,9 @@ class UsersAdapter(): RecyclerView.Adapter<UsersAdapter.ViewHolder>() {
     lateinit var listener: AdapterInterfaces.UsersAdapterEventListener
 
     // Dataset
-    private var dataSet: ArrayList<UserModel> = ArrayList()
+    private var dataSet: ArrayList<User> = ArrayList()
 
-    fun setDataSet(usersList: ArrayList<UserModel>) {
+    fun setDataSet(usersList: ArrayList<User>) {
         this.dataSet = usersList
         notifyDataSetChanged()
     }
@@ -43,9 +43,9 @@ class UsersAdapter(): RecyclerView.Adapter<UsersAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val currentUser: UserModel = dataSet[position]
+        val currentUser: User = dataSet[position]
         viewHolder.userName.text = currentUser.nickName
-        viewHolder.userStatus.text = UserModel.getStatus(currentUser.rating)
+        viewHolder.userStatus.text = User.getStatus(currentUser.rating)
         viewHolder.userRating.text = currentUser.rating.toString()
 
         try {

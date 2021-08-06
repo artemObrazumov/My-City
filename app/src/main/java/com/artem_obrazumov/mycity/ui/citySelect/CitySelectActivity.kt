@@ -17,15 +17,17 @@ import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
 import com.artem_obrazumov.mycity.ui.main.MainActivity
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
+import android.app.Activity
+import android.widget.Toast
+import com.artem_obrazumov.mycity.R
 
 @ExperimentalCoroutinesApi
 class CitySelectActivity : AppCompatActivity() {
-
     private lateinit var viewModel: CitySelectViewModel
-    private lateinit var binding : ActivityCitySelectBinding
-    private lateinit var database : FirebaseDatabase
-    private lateinit var citiesList : ArrayList<String>
+    private lateinit var binding: ActivityCitySelectBinding
+    private lateinit var database: FirebaseDatabase
+    private lateinit var citiesList: ArrayList<String>
+    private lateinit var selectedCity: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         database = FirebaseDatabase.getInstance()
@@ -38,7 +40,19 @@ class CitySelectActivity : AppCompatActivity() {
         val root = binding.root
         setContentView(root)
         binding.selectButton.setOnClickListener{
+            if (!checkIfCitySelected()) {
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.select_city),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
             startDisappearAnimation()
+            if (callingActivity != null) {
+                returnDataForResult()
+                return@setOnClickListener
+            }
             saveData()
 
             Handler(Looper.getMainLooper()).postDelayed({
@@ -49,6 +63,11 @@ class CitySelectActivity : AppCompatActivity() {
         }
 
         getCitiesList()
+    }
+
+
+    private fun checkIfCitySelected(): Boolean {
+        return this::selectedCity.isInitialized
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -73,11 +92,11 @@ class CitySelectActivity : AppCompatActivity() {
     private fun setupDialog() {
         binding.selectedCityName.setOnClickListener {
             AlertDialog.Builder(this)
-                .setItems(citiesList.toTypedArray(),
-                    DialogInterface.OnClickListener { _, which ->
-                        val selectedCityName: String = citiesList[which]
-                        binding.selectedCityName.text = selectedCityName
-                    })
+                .setItems(citiesList.toTypedArray()
+                ) { _, which ->
+                    selectedCity = citiesList[which]
+                    binding.selectedCityName.text = selectedCity
+                }
                 .create().show()
         }
     }
@@ -97,8 +116,15 @@ class CitySelectActivity : AppCompatActivity() {
 
     private fun saveData() {
         with (getSharedPreferences("user_data", Context.MODE_PRIVATE).edit()) {
-            putString("cityName", binding.selectedCityName.text as String)
+            putString("cityName", selectedCity)
             apply()
         }
+    }
+
+    private fun returnDataForResult() {
+        val result = Intent()
+        result.putExtra("city", selectedCity)
+        setResult(RESULT_OK, result)
+        finish()
     }
 }

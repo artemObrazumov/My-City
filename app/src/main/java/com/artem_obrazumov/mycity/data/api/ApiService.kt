@@ -1,20 +1,20 @@
 package com.artem_obrazumov.mycity.data.api
 
-import com.artem_obrazumov.mycity.data.models.PlaceModel
-import com.artem_obrazumov.mycity.data.models.UserModel
+import com.artem_obrazumov.mycity.data.models.Place
+import com.artem_obrazumov.mycity.data.models.User
+import com.artem_obrazumov.mycity.ui.instructions.models.InstructionsScript
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.database.DataSnapshot
-import kotlinx.coroutines.flow.Flow
 
 interface ApiService {
     // Database requests
-    suspend fun getPopularCritics(cityName: String) : MutableList<UserModel>
-    suspend fun getPopularPlaces(cityName: String) : MutableList<PlaceModel>
-    suspend fun getUserData(userId: String) : UserModel
+    suspend fun getPopularCritics(cityName: String) : MutableList<User>
+    suspend fun getPopularPlaces(cityName: String) : MutableList<Place>
+    suspend fun getUserData(userId: String) : User
     suspend fun getCitiesList() : MutableList<String>
+    suspend fun getInstructionScript(): InstructionsScript
 
-    suspend fun saveUserdataToDatabase(user: UserModel)
+    suspend fun saveUserdataToDatabase(user: User)
 
     // Authorization requests
     suspend fun registerUser(
