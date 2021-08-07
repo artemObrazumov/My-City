@@ -8,9 +8,12 @@ import com.artem_obrazumov.mycity.ui.authorization.AuthorizationViewModel
 import com.artem_obrazumov.mycity.ui.citySelect.CitySelectViewModel
 import com.artem_obrazumov.mycity.ui.home.HomeViewModel
 import com.artem_obrazumov.mycity.ui.instructions.InstructionsViewModel
+import com.artem_obrazumov.mycity.ui.placeDetail.PlaceDetailViewModel
 import com.artem_obrazumov.mycity.ui.profile.ProfileViewModel
 import com.artem_obrazumov.mycity.ui.profileEdit.ProfileEditViewModel
 import com.artem_obrazumov.mycity.ui.registration.RegistrationViewModel
+import com.artem_obrazumov.mycity.ui.showMore.showMorePlaces.ShowMorePlacesViewModel
+import com.artem_obrazumov.mycity.ui.showMore.showMoreUsers.ShowMoreUsersViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -41,6 +44,15 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(InstructionsViewModel::class.java) -> {
                 return InstructionsViewModel(dataRepository!!) as T
+            }
+            modelClass.isAssignableFrom(ShowMoreUsersViewModel::class.java) -> {
+                return ShowMoreUsersViewModel(dataRepository!!) as T
+            }
+            modelClass.isAssignableFrom(ShowMorePlacesViewModel::class.java) -> {
+                return ShowMorePlacesViewModel(dataRepository!!) as T
+            }
+            modelClass.isAssignableFrom(PlaceDetailViewModel::class.java) -> {
+                return PlaceDetailViewModel(dataRepository!!) as T
             }
         }
         throw IllegalArgumentException("Unknown class name")

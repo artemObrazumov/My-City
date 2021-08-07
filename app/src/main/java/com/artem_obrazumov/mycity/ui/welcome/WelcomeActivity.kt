@@ -1,31 +1,34 @@
 package com.artem_obrazumov.mycity.ui.welcome
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
+import com.artem_obrazumov.mycity.data.models.Place
 import com.artem_obrazumov.mycity.databinding.ActivityWelcomeBinding
 import com.artem_obrazumov.mycity.ui.citySelect.CitySelectActivity
-import com.artem_obrazumov.mycity.ui.instructions.InstructionsActivity
+import com.artem_obrazumov.mycity.ui.main.MainActivity
 import com.artem_obrazumov.mycity.ui.welcome.WelcomeActivity.WelcomeScreenConstants.WELCOME_SCREEN_DURATION
 import com.artem_obrazumov.mycity.utils.getUserCity
-import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.util.Util
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 class WelcomeActivity : AppCompatActivity() {
     object WelcomeScreenConstants {
-        const val WELCOME_SCREEN_DURATION : Long = 6000L
+        const val WELCOME_SCREEN_DURATION : Long = 5000L
     }
 
     private lateinit var binding : ActivityWelcomeBinding
-    private lateinit var database : FirebaseDatabase
+    private lateinit var database : FirebaseFirestore
     private var isAnimationFinished = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        database = FirebaseDatabase.getInstance()
+        database = FirebaseFirestore.getInstance()
         super.onCreate(savedInstanceState)
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         val root = binding.root
@@ -63,21 +66,17 @@ class WelcomeActivity : AppCompatActivity() {
     private fun leaveActivity() {
         val currentCityName: String = getUserCity(applicationContext)
 
-        database.getReference("Cities/$currentCityName").addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val intent : Intent = if (!snapshot.exists()) {
-                        Intent(applicationContext, CitySelectActivity::class.java)
-                    } else {
-                        Intent(applicationContext, InstructionsActivity::class.java)
-                        // TODO: mainAct
-                    }
-                    startActivity(intent)
-                }
-
-                override fun onCancelled(error: DatabaseError) {}
+        database.collection("Cities")
+            .document(currentCityName).get()
+            .addOnSuccessListener{ snapshot ->
+            val intent: Intent = if (!snapshot.getBoolean("exists")!!) {
+                Intent(applicationContext, CitySelectActivity::class.java)
+            } else {
+                Intent(applicationContext, MainActivity::class.java)
+                // TODO: mainAct
             }
-        )
+            startActivity(intent)
+        }
     }
 
     override fun onResume() {

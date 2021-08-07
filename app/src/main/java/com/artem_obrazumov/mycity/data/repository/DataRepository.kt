@@ -9,9 +9,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 */
 @ExperimentalCoroutinesApi
 class DataRepository {
+    suspend fun getPopularCriticsWithLimit(cityName: String) = Api.getPopularCriticsWithLimit(cityName)
     suspend fun getPopularCritics(cityName: String) = Api.getPopularCritics(cityName)
     suspend fun getPopularPlaces(cityName: String) = Api.getPopularPlaces(cityName)
     suspend fun getUserData(userId: String) = Api.getUserData(userId)
+    suspend fun getPlaceData(placeId: String)  = Api.getPlaceData(placeId)
     suspend fun getCitiesList() = Api.getCitiesList()
     suspend fun getInstructionScript() = Api.getInstructionScript()
 

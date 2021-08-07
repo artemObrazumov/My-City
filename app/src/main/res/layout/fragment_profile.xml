@@ -32,9 +32,9 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/main"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     tools:visibility="visible">
 
                     <ImageView
@@ -57,10 +57,90 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
-                    <androidx.cardview.widget.CardView
+                    <TextView
+                        android:id="@+id/tv_nikname_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:text="Артём Образумов"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/avatar"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="@+id/avatar"
+                        app:layout_constraintTop_toBottomOf="@+id/avatar" />
+
+                    <TextView
+                        android:id="@+id/tv_user_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="gay_master"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_nikname_user"
+                        app:layout_constraintStart_toStartOf="@+id/tv_nikname_user"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_nikname_user" />
+
+                    <TextView
+                        android:id="@+id/tv_about"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="Занимаюсб gachii muchi. Люблю fisting Ass Free Handreed Bucks"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_user_nickname"
+                        app:layout_constraintStart_toStartOf="@+id/tv_user_nickname"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_user_nickname" />
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </androidx.cardview.widget.CardView>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_about">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="gay"
+                                android:layout_gravity="center"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:layout_gravity="center"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="gay"
+                                android:layout_gravity="center"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:layout_gravity="center"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

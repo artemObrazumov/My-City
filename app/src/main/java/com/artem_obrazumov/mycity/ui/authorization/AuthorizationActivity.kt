@@ -91,7 +91,7 @@ class AuthorizationActivity : AppCompatActivity() {
         }
     }
 
-    // Finishing registration
+    // Finishing authorization
     private fun onUserAuthorized() {
         isFinished = true
         showFinishedDialog()
@@ -101,7 +101,7 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        // Going back only if registration isn't finished
+        // Going back only if authorization isn't finished
         if (!isFinished) {
             super.onBackPressed()
         }

@@ -1,9 +1,9 @@
 package com.artem_obrazumov.mycity.data.models
 
+// Класс отзыва
 data class Review(
-    var id : String = "",
-    var authorId : String = "",
-    var placeId : String = "",
-    var photoAttachments : ArrayList<String>,
-    var videoAttachments : ArrayList<String>
-)
+    var id: String = "",
+    var authorId: String = "",
+    var placeId: String = "",
+    var attachments: ArrayList<Attachment> = arrayListOf(),
+    var author: User? = null)

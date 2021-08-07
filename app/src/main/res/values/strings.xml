@@ -47,4 +47,6 @@
     <string name="data_updated">Данные обновлены!</string>
     <string name="skip">Пропустить</string>
     <string name="finish">Закончить</string>
+    <string name="menu_users">Пользователи</string>
+    <string name="menu_places">Места</string>
 </resources>

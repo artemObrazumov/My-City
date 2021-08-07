@@ -4,18 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
 import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.ui.instructions.models.InstructionSlide
 import com.artem_obrazumov.mycity.ui.instructions.models.InstructionsScript
 import com.bumptech.glide.Glide
-import java.lang.Exception
-import android.widget.LinearLayout
 
 class InstructionsPagerAdapter(
-    var script: InstructionsScript,
-    val context: Context
+    private var script: InstructionsScript,
+    private val context: Context
 ) : PagerAdapter() {
 
     override fun getCount(): Int = script.slides.size

@@ -5,17 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.artem_obrazumov.mycity.R
-import com.artem_obrazumov.mycity.databinding.ActivityRegistrationBinding
-import com.artem_obrazumov.mycity.utils.getUserCity
 import com.artem_obrazumov.mycity.data.models.User
 import com.artem_obrazumov.mycity.data.repository.AuthenticationRepository
 import com.artem_obrazumov.mycity.data.repository.DataRepository
+import com.artem_obrazumov.mycity.databinding.ActivityRegistrationBinding
 import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
 import com.artem_obrazumov.mycity.utils.getTrimmedText
+import com.artem_obrazumov.mycity.utils.getUserCity
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -24,7 +23,6 @@ class RegistrationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegistrationBinding
     private val user: User = User()
     private lateinit var auth: FirebaseAuth
-    private lateinit var database: FirebaseDatabase
     private var isFinished = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +33,6 @@ class RegistrationActivity : AppCompatActivity() {
             .get(RegistrationViewModel::class.java)
 
         auth = FirebaseAuth.getInstance()
-        database = FirebaseDatabase.getInstance()
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
         showRegistrationForm()
@@ -132,7 +129,7 @@ class RegistrationActivity : AppCompatActivity() {
         isFinished = true
         showFinishedDialog()
         binding.restartButton.setOnClickListener {
-            finishAndRemoveTask()
+            finishAffinity()
         }
     }
 

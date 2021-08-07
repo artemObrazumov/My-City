@@ -1,4 +1,4 @@
-package com.artem_obrazumov.mycity.ui.home
+package com.artem_obrazumov.mycity.ui.placeDetail
 
 import android.content.Context
 import android.os.Bundle
@@ -23,11 +23,11 @@ import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
-class HomeFragment : Fragment() {
+class PlaceDetailFragment : Fragment() {
     private lateinit var criticsAdapter: UsersAdapter
     private lateinit var placesAdapter: PlacesAdapter
 
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: PlaceDetailViewModel
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,12 +35,9 @@ class HomeFragment : Fragment() {
 
         viewModel = ViewModelProvider(this,
             ViewModelFactory(dataRepository = DataRepository()))
-            .get(HomeViewModel::class.java)
+            .get(PlaceDetailViewModel::class.java)
         if (!viewModel.initialized) {
-            viewModel.cityName =
-                activity?.getSharedPreferences("user_data", Context.MODE_PRIVATE)
-                    ?.getString("cityName", "NonExistingCity") as String
-            viewModel.getData()
+            viewModel.getPlaceData(requireArguments().getString("placeId")!!)
         }
     }
 
@@ -53,47 +50,8 @@ class HomeFragment : Fragment() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             Navigation.findNavController(root).navigate(R.id.refresh)
         }
-        initializeLists()
         initializeShowMoreButtons()
         return root
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun initializeLists() {
-        binding.placesList.apply {
-            placesAdapter = PlacesAdapter()
-            binding.placesList.layoutManager = LinearLayoutManager(context)
-            binding.placesList.adapter = placesAdapter
-            viewModel.placesList.observe(viewLifecycleOwner, Observer { placesList ->
-                placesAdapter.setDataSet(placesList as ArrayList<Place>)
-                binding.placesProgressBar.visibility = View.GONE
-                if (placesList.size == 0) {
-                    binding.placesLabel.visibility = View.GONE
-                    binding.placesList.visibility = View.GONE
-                }
-            })
-        }
-
-        binding.criticsList.apply {
-            criticsAdapter = UsersAdapter()
-            criticsAdapter.listener = object: AdapterInterfaces.UsersAdapterEventListener{
-                override fun onUserClicked(userId: String) {
-                    val bundle = Bundle()
-                    bundle.putString("userId", userId)
-                    view?.findNavController()?.navigate(R.id.navigation_profile, bundle)
-                }
-            }
-            binding.criticsList.layoutManager = LinearLayoutManager(context)
-            binding.criticsList.adapter = criticsAdapter
-            viewModel.criticsList.observe(viewLifecycleOwner, { criticsList ->
-                criticsAdapter.setDataSet(criticsList as ArrayList<User>)
-                binding.criticsProgressBar.visibility = View.GONE
-                if (criticsList.size == 0) {
-                    binding.criticsLabel.visibility = View.GONE
-                    binding.criticsList.visibility = View.GONE
-                }
-            })
-        }
     }
 
     private fun initializeShowMoreButtons() {

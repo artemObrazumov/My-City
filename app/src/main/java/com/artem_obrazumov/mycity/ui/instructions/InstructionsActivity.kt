@@ -18,7 +18,7 @@ class InstructionsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInstructionsBinding
     private lateinit var adapter: InstructionsPagerAdapter
 
-    val animationSpeed = 300L
+    private val animationSpeed = 300L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

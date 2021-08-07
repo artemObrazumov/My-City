@@ -17,5 +17,5 @@ data class User(
     }
 
     fun getFirstName() = name.split(" ")[0]
-    fun getSurname() =   name.split(" ")[1]
+    fun getSurname()   = name.split(" ")[1]
 }

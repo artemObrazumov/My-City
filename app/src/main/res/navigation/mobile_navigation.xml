@@ -20,6 +20,34 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_show_more_users"
+        android:name="com.artem_obrazumov.mycity.ui.showMore.showMoreUsers.ShowMoreUsersFragment"
+        android:label="@string/menu_users"
+        tools:layout="@layout/fragment_recycler_view">
+
+        <action
+            android:id="@+id/refresh"
+            app:destination="@id/navigation_show_more_users"
+            app:popUpTo="@+id/navigation_show_more_users"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_show_more_places"
+        android:name="com.artem_obrazumov.mycity.ui.showMore.showMorePlaces.ShowMorePlacesFragment"
+        android:label="@string/menu_places"
+        tools:layout="@layout/fragment_recycler_view">
+
+        <action
+            android:id="@+id/refresh"
+            app:destination="@id/navigation_show_more_places"
+            app:popUpTo="@+id/navigation_show_more_places"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.artem_obrazumov.mycity.ui.reviews.DashboardFragment"
         android:label="@string/menu_my_reviews"
@@ -49,6 +77,20 @@
             android:id="@+id/refresh"
             app:destination="@id/navigation_profile"
             app:popUpTo="@+id/navigation_profile"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_place_detail"
+        android:name="com.artem_obrazumov.mycity.ui.placeDetail.PlaceDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_place_detail" >
+
+        <action
+            android:id="@+id/refresh"
+            app:destination="@id/navigation_place_detail"
+            app:popUpTo="@+id/navigation_place_detail"
             app:popUpToInclusive="true"/>
 
     </fragment>

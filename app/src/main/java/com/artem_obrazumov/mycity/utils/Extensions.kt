@@ -62,7 +62,7 @@ fun Activity.setActionBarTitle(title: String) {
  * Custom method to easily handle backPress in fragment
  */
 fun Fragment.initializeBackPress() {
-    val navController: NavController = view!!.findNavController()
+    val navController: NavController = this.requireView().findNavController()
     val callback: OnBackPressedCallback =
         object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {

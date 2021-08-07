@@ -1,36 +1,32 @@
 package com.artem_obrazumov.mycity.ui.citySelect
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.data.repository.DataRepository
 import com.artem_obrazumov.mycity.databinding.ActivityCitySelectBinding
-import com.artem_obrazumov.mycity.ui.authorization.AuthorizationViewModel
 import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
 import com.artem_obrazumov.mycity.ui.main.MainActivity
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import android.app.Activity
-import android.widget.Toast
-import com.artem_obrazumov.mycity.R
 
 @ExperimentalCoroutinesApi
 class CitySelectActivity : AppCompatActivity() {
     private lateinit var viewModel: CitySelectViewModel
     private lateinit var binding: ActivityCitySelectBinding
-    private lateinit var database: FirebaseDatabase
+    private lateinit var database: FirebaseFirestore
     private lateinit var citiesList: ArrayList<String>
     private lateinit var selectedCity: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        database = FirebaseDatabase.getInstance()
+        database = FirebaseFirestore.getInstance()
         viewModel = ViewModelProvider(this,
             ViewModelFactory(dataRepository = DataRepository()))
             .get(CitySelectViewModel::class.java)
@@ -115,7 +111,7 @@ class CitySelectActivity : AppCompatActivity() {
     }
 
     private fun saveData() {
-        with (getSharedPreferences("user_data", Context.MODE_PRIVATE).edit()) {
+        with (getSharedPreferences("user_data", MODE_PRIVATE).edit()) {
             putString("cityName", selectedCity)
             apply()
         }

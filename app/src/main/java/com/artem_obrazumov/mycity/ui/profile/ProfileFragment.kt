@@ -3,6 +3,7 @@ package com.artem_obrazumov.mycity.ui.profile
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -58,7 +59,6 @@ class ProfileFragment : Fragment() {
         } catch (e: Exception) {
             if (auth.isLogged()) auth.currentUser?.uid!! else ""
         }
-        initializeViewModel()
         initializeBackPress()
         checkIfLogged()
     }
@@ -73,6 +73,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         this.menu = menu
         inflater.inflate(R.menu.profile_menu, menu)
+        setupMenu()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -90,6 +91,7 @@ class ProfileFragment : Fragment() {
         if (!auth.isLogged() && userId.isEmpty()) {
             Navigation.findNavController(view as View).navigate(R.id.navigation_unlogged_profile)
         } else {
+            initializeViewModel()
             getUserData()
         }
     }

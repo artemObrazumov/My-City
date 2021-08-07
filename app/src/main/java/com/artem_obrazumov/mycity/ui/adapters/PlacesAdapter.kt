@@ -17,7 +17,7 @@ import java.lang.Exception
 import java.lang.IllegalArgumentException
 
 class PlacesAdapter(): RecyclerView.Adapter<PlacesAdapter.ViewHolder>() {
-
+    lateinit var listener: AdapterInterfaces.PlacesAdapterEventListener
     private var dataSet: ArrayList<Place> = ArrayList()
 
     @SuppressLint("NotifyDataSetChanged")
