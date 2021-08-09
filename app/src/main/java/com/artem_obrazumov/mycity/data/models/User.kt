@@ -8,6 +8,8 @@ data class User(
     var email: String = "",
     var cityName : String = "",
     var nickName: String = "",
+    var about: String = "",
+    var reviews: Int = 0,
     var rating: Int = 0) {
 
     companion object {

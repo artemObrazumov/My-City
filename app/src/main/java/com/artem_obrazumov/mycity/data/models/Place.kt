@@ -10,5 +10,5 @@ data class Place(
     var mapLocation : String = "",
     var ratingScore : Int = 0,
     var peopleRated : Int = 0,
-    val commonRating : Int = 0,
+    var commonRating : Float = 0f,
     var attachment : ArrayList<Attachment> = arrayListOf())

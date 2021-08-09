@@ -7,9 +7,9 @@
         android:title="@string/menu_my_city" />
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_my_reviews"
-        android:title="@string/menu_my_reviews" />
+        android:id="@+id/navigation_favorites"
+        android:icon="@drawable/ic_heart"
+        android:title="@string/menu_my_favorites" />
 
     <item
         android:id="@+id/navigation_my_profile"

@@ -62,6 +62,13 @@ class HomeFragment : Fragment() {
     private fun initializeLists() {
         binding.placesList.apply {
             placesAdapter = PlacesAdapter()
+            placesAdapter.listener = object: AdapterInterfaces.PlacesAdapterEventListener{
+                override fun onPlaceClicked(placeId: String) {
+                    val bundle = Bundle()
+                    bundle.putString("placeId", placeId)
+                    view?.findNavController()?.navigate(R.id.navigation_place_detail, bundle)
+                }
+            }
             binding.placesList.layoutManager = LinearLayoutManager(context)
             binding.placesList.adapter = placesAdapter
             viewModel.placesList.observe(viewLifecycleOwner, Observer { placesList ->

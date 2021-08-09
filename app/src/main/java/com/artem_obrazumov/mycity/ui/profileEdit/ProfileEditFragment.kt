@@ -13,12 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.data.models.User
-import com.artem_obrazumov.mycity.utils.initializeBackPress
 import com.artem_obrazumov.mycity.data.repository.DataRepository
 import com.artem_obrazumov.mycity.databinding.FragmentEditProfileBinding
 import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
 import com.artem_obrazumov.mycity.ui.citySelect.CitySelectActivity
 import com.artem_obrazumov.mycity.utils.getTrimmedText
+import com.artem_obrazumov.mycity.utils.initializeBackPress
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -62,10 +62,14 @@ class ProfileEditFragment : Fragment() {
         super.onStart()
         initializeBackPress()
         initializeViewModel()
-        viewModel.userData.observe(viewLifecycleOwner, Observer { user ->
+        viewModel.userData.observe(viewLifecycleOwner, { user ->
             currentUserData = user
             displayCurrentUserData()
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.editing_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -87,6 +91,8 @@ class ProfileEditFragment : Fragment() {
         binding.inputName.setText(currentUserData.getFirstName())
         binding.inputSurname.setText(currentUserData.getSurname())
         binding.inputNickname.setText(currentUserData.nickName)
+        binding.inputAbout.setText(currentUserData.about)
+        startAppearAnimation()
     }
 
     private fun getNewCity() {
@@ -104,6 +110,14 @@ class ProfileEditFragment : Fragment() {
         }
     }
 
+    @Suppress("UsePropertyAccessSyntax")
+    private fun startAppearAnimation() {
+        binding.progressBar.visibility = View.GONE
+        binding.main.visibility = View.VISIBLE
+        binding.main.animate()
+            .translationY(-40f).alpha(1f).setDuration(500L)
+    }
+
     private fun updateCityInSharedPreferences() {
         // Update the city in shared preferences if it was changed
         if (newCity != null) {
@@ -118,7 +132,8 @@ class ProfileEditFragment : Fragment() {
 
     private fun getNewUserObject() = currentUserData.copy(
         name = "${binding.inputName.getTrimmedText()} ${binding.inputSurname.getTrimmedText()}",
-        nickName = binding.inputNickname.getTrimmedText()
+        nickName = binding.inputNickname.getTrimmedText(),
+        about = binding.inputAbout.getTrimmedText()
     )
 
     private fun isValid(): Boolean {
@@ -136,6 +151,11 @@ class ProfileEditFragment : Fragment() {
         if (binding.inputNickname.getTrimmedText().length < 3) {
             binding.inputNickname.error = getString(R.string.short_nickname)
             binding.inputNickname.requestFocus()
+            return false
+        }
+        if (binding.inputAbout.getTrimmedText().length > 100) {
+            binding.inputAbout.error = getString(R.string.too_much_about)
+            binding.inputAbout.requestFocus()
             return false
         }
         return true

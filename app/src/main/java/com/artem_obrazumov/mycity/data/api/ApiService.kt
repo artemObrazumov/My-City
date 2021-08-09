@@ -1,5 +1,7 @@
 package com.artem_obrazumov.mycity.data.api
 
+import android.content.Context
+import android.net.Uri
 import com.artem_obrazumov.mycity.data.models.Place
 import com.artem_obrazumov.mycity.data.models.Review
 import com.artem_obrazumov.mycity.data.models.User
@@ -15,11 +17,17 @@ interface ApiService {
     suspend fun getUserData(userId: String) : User
     suspend fun getPlaceData(placeId: String) : Place
     suspend fun getReviews(placeId: String,
-                           loadAuthorData: Boolean = true) : MutableList<Review>
-    suspend fun getCitiesList() : MutableList<String>
+                           loadAuthorData: Boolean) : MutableList<Review>
+    suspend fun getCitiesList(): MutableList<String>
     suspend fun getInstructionScript(): InstructionsScript
+    suspend fun getFavoritePlaces(ids: Set<String>): MutableList<Place>
 
     suspend fun saveUserdataToDatabase(user: User)
+    fun savePlaceToFavorites(context: Context, placeId: String)
+    fun removePlaceFromFavorites(context: Context, placeId: String)
+    fun uploadReview(review: Review)
+    suspend fun changeRating(review: Review)
+    suspend fun changeUserRating(review: Review)
 
     // Authorization requests
     suspend fun registerUser(
@@ -30,4 +38,8 @@ interface ApiService {
         email: String,
         password: String
     ) : Task<AuthResult>
+
+    // Storage requests
+    suspend fun eraseAvatar(userId: String): String
+    suspend fun changeAvatar(userId: String, newAvatarURI: Uri): String
 }

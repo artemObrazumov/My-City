@@ -1,5 +1,6 @@
 package com.artem_obrazumov.mycity.ui.instructions
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import com.artem_obrazumov.mycity.data.repository.DataRepository
 import com.artem_obrazumov.mycity.databinding.ActivityInstructionsBinding
 import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
 import com.artem_obrazumov.mycity.ui.instructions.adapters.InstructionsPagerAdapter
+import com.artem_obrazumov.mycity.ui.main.MainActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -27,6 +29,29 @@ class InstructionsActivity : AppCompatActivity() {
         initializeViewModel()
         initializeViewPager()
         setContentView(root)
+
+        binding.finishButton.setOnClickListener {
+            with (
+                getSharedPreferences("user_data", AppCompatActivity.MODE_PRIVATE).edit()
+            ) {
+                putBoolean("watchedInstruction", true)
+                apply()
+            }
+            startActivity(
+                Intent(this, MainActivity::class.java)
+            )
+        }
+        binding.skipButton.setOnClickListener {
+            with (
+                getSharedPreferences("user_data", AppCompatActivity.MODE_PRIVATE).edit()
+            ) {
+                putBoolean("watchedInstruction", true)
+                apply()
+            }
+            startActivity(
+                Intent(this, MainActivity::class.java)
+            )
+        }
     }
 
     private fun initializeViewModel() {
@@ -40,7 +65,7 @@ class InstructionsActivity : AppCompatActivity() {
     }
 
     private fun initializeViewPager() {
-        viewModel.instructionsScript.observe(this, Observer { script ->
+        viewModel.instructionsScript.observe(this, { script ->
             adapter = InstructionsPagerAdapter(script, applicationContext)
             binding.viewPager.adapter = adapter
             binding.viewPager.setPadding(80, 0, 80, 0)

@@ -13,9 +13,11 @@ import com.artem_obrazumov.mycity.ui.citySelect.CitySelectActivity
 import com.artem_obrazumov.mycity.ui.main.MainActivity
 import com.artem_obrazumov.mycity.ui.welcome.WelcomeActivity.WelcomeScreenConstants.WELCOME_SCREEN_DURATION
 import com.artem_obrazumov.mycity.utils.getUserCity
+import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.util.Util
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.lang.Exception
 
 @ExperimentalCoroutinesApi
 class WelcomeActivity : AppCompatActivity() {
@@ -53,11 +55,12 @@ class WelcomeActivity : AppCompatActivity() {
             .translationY(0f).setDuration(1000L)
             .setInterpolator(AccelerateDecelerateInterpolator())
 
-        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+        Handler(Looper.getMainLooper()).postDelayed({
             onAnimationFinished()
         }, WELCOME_SCREEN_DURATION)
     }
 
+    @SuppressLint("RestrictedApi")
     private fun onAnimationFinished() {
         isAnimationFinished = true
         leaveActivity()
@@ -69,13 +72,17 @@ class WelcomeActivity : AppCompatActivity() {
         database.collection("Cities")
             .document(currentCityName).get()
             .addOnSuccessListener{ snapshot ->
-            val intent: Intent = if (!snapshot.getBoolean("exists")!!) {
-                Intent(applicationContext, CitySelectActivity::class.java)
-            } else {
-                Intent(applicationContext, MainActivity::class.java)
-                // TODO: mainAct
-            }
-            startActivity(intent)
+                val intent: Intent? = try {
+                    if (!snapshot.getBoolean("exists")!!) {
+                        Intent(applicationContext, CitySelectActivity::class.java)
+                    } else {
+                        Intent(applicationContext, MainActivity::class.java)
+                    }
+                } catch (e: Exception) {
+                    Intent(applicationContext, CitySelectActivity::class.java)
+                }
+
+                startActivity(intent!!)
         }
     }
 

@@ -29,13 +29,16 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
+    // ignore backpress
+    override fun onBackPressed() {}
+
     private fun getAppBarConfiguration(): AppBarConfiguration {
         if (auth.currentUser == null) {
             // User isn't logged in
             return AppBarConfiguration(
                 setOf(
                     R.id.navigation_home,
-                    R.id.navigation_dashboard,
+                    R.id.navigation_favorites,
                     R.id.navigation_unlogged_profile
                 )
             )
@@ -44,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             return AppBarConfiguration(
                 setOf(
                     R.id.navigation_home,
-                    R.id.navigation_dashboard,
+                    R.id.navigation_favorites,
                     R.id.navigation_my_profile
                 )
             )

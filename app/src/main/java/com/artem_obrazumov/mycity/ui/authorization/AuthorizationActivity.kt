@@ -1,6 +1,8 @@
 package com.artem_obrazumov.mycity.ui.authorization
 
+import android.animation.Animator
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -45,24 +47,40 @@ class AuthorizationActivity : AppCompatActivity() {
     private fun showRegistrationForm() {
         binding.registrationContent.animate()
             .translationY(0f).alpha(1f).setDuration(500L)
+            .setListener(object: Animator.AnimatorListener {
+                override fun onAnimationEnd(p0: Animator?) {
+                    binding.registrationContent.visibility = View.VISIBLE
+                }
+                override fun onAnimationStart(p0: Animator?) {}
+                override fun onAnimationCancel(p0: Animator?) {}
+                override fun onAnimationRepeat(p0: Animator?) {}
+            })
         binding.loadingContent.animate()
-                .translationY(-40f).alpha(0f).setDuration(500L)
+            .translationY(-40f).alpha(0f).setDuration(500L)
     }
 
     @Suppress("UsePropertyAccessSyntax")
     private fun showLoading() {
         binding.registrationContent.animate()
-                .translationY(-20f).alpha(0f).setDuration(500L)
+            .translationY(-20f).alpha(0f).setDuration(500L)
+            .setListener(object: Animator.AnimatorListener {
+                override fun onAnimationEnd(p0: Animator?) {
+                    binding.registrationContent.visibility = View.GONE
+                }
+                override fun onAnimationStart(p0: Animator?) {}
+                override fun onAnimationCancel(p0: Animator?) {}
+                override fun onAnimationRepeat(p0: Animator?) {}
+            })
         binding.loadingContent.animate()
-                .translationY(0f).alpha(1f).setDuration(500L)
+            .translationY(0f).alpha(1f).setDuration(500L)
     }
 
     @Suppress("UsePropertyAccessSyntax")
     private fun showFinishedDialog() {
         binding.loadingContent.animate()
-                .translationY(40f).alpha(0f).setDuration(500L)
+            .translationY(40f).alpha(0f).setDuration(500L)
         binding.finishingRegistrationContent.animate()
-                .translationY(-40f).alpha(1f).setDuration(500L)
+            .translationY(-40f).alpha(1f).setDuration(500L)
     }
 
     // Trying to authorize user

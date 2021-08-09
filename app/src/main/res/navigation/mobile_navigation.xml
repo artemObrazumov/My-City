@@ -48,10 +48,18 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.artem_obrazumov.mycity.ui.reviews.DashboardFragment"
-        android:label="@string/menu_my_reviews"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_favorites"
+        android:name="com.artem_obrazumov.mycity.ui.favorites.FavoritesFragment"
+        android:label="@string/menu_favorites"
+        tools:layout="@layout/fragment_favorites">
+
+        <action
+            android:id="@+id/refresh"
+            app:destination="@id/navigation_favorites"
+            app:popUpTo="@+id/navigation_favorites"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_my_profile"

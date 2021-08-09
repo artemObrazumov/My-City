@@ -49,4 +49,24 @@
     <string name="finish">Закончить</string>
     <string name="menu_users">Пользователи</string>
     <string name="menu_places">Места</string>
+    <string name="no_user_about">Пользователь еще не написал о себе</string>
+    <string name="user_reviews">Отзывов написано</string>
+    <string name="rating">Рейтинг</string>
+    <string name="erase_avatar">Удалить аватарку</string>
+    <string name="change_avatar">Изменить аватарку</string>
+    <string name="error">Ошибка</string>
+    <string name="menu_my_favorites">Избранные</string>
+    <string name="change_city">Сменить город</string>
+    <string name="about_me">Напишите о себе</string>
+    <string name="too_much_about">Слишком большая информация о себе</string>
+    <string name="reviews">Отзывы</string>
+    <string name="menu_favorites">Избранные</string>
+    <string name="removed_from_favorites">Удалено из избранных</string>
+    <string name="add_to_favorites">Добавлено в избранное</string>
+    <string name="add_review">Добавить отзыв</string>
+    <string name="review_text">Напишите отзыв</string>
+    <string name="put_rating">Поставьте оценку</string>
+    <string name="no_rating">Не указан рейтинг!</string>
+    <string name="too_long_review">Слишком длинный отзыв</string>
+    <string name="log_to_review">Войдите в аккаунт, чтобы оставлять отзывы!</string>
 </resources>

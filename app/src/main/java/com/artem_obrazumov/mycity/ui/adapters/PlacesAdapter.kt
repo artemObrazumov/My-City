@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.data.models.Attachment
 import com.artem_obrazumov.mycity.data.models.Place
+import com.artem_obrazumov.mycity.utils.onClick
 import com.bumptech.glide.Glide
 import java.lang.Exception
 import java.lang.IllegalArgumentException
@@ -27,23 +28,26 @@ class PlacesAdapter(): RecyclerView.Adapter<PlacesAdapter.ViewHolder>() {
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val placeImage : ImageView = view.findViewById(R.id.place_image)
-        val placeTitle : TextView = view.findViewById(R.id.place_title)
-        val placeDescription : TextView = view.findViewById(R.id.place_description)
-        val placeRating : RatingBar = view.findViewById(R.id.place_rating)
+        val placeImage: ImageView = view.findViewById(R.id.place_image)
+        val placeTitle: TextView = view.findViewById(R.id.place_title)
+        val placeAddress: TextView = view.findViewById(R.id.place_address)
+        val placeRating: RatingBar = view.findViewById(R.id.place_rating)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.place_row, viewGroup, false)
 
-        return ViewHolder(view)
+        return ViewHolder(view).onClick { position ->
+            val placeId = dataSet[position].id
+            listener.onPlaceClicked(placeId)
+        }
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val currentPlace : Place = dataSet[position]
         viewHolder.placeTitle.text = currentPlace.title
-        viewHolder.placeDescription.text = currentPlace.description
+        viewHolder.placeAddress.text = currentPlace.address
         viewHolder.placeRating.rating = currentPlace.ratingScore.toFloat()
 
         try {

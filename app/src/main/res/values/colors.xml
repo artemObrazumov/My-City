@@ -11,4 +11,5 @@
     <color name="activated_star">#FF9900</color>
     <color name="sky_background">#0BBAFF</color>
     <color name="placeholder">#C8C8C8</color>
+    <color name="red_heart">#FF4F4F</color>
 </resources>

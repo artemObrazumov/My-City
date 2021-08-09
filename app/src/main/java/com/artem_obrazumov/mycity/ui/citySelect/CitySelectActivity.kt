@@ -1,6 +1,7 @@
 package com.artem_obrazumov.mycity.ui.citySelect
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -13,6 +14,7 @@ import com.artem_obrazumov.mycity.R
 import com.artem_obrazumov.mycity.data.repository.DataRepository
 import com.artem_obrazumov.mycity.databinding.ActivityCitySelectBinding
 import com.artem_obrazumov.mycity.ui.base.ViewModelFactory
+import com.artem_obrazumov.mycity.ui.instructions.InstructionsActivity
 import com.artem_obrazumov.mycity.ui.main.MainActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,9 +54,17 @@ class CitySelectActivity : AppCompatActivity() {
             saveData()
 
             Handler(Looper.getMainLooper()).postDelayed({
-                startActivity(
-                    Intent(this@CitySelectActivity, MainActivity::class.java)
-                )
+                val watchedInstr = getSharedPreferences("user_data", Context.MODE_PRIVATE)
+                    .getBoolean("watchedInstruction", false)
+                if (watchedInstr) {
+                    startActivity(
+                        Intent(this@CitySelectActivity, MainActivity::class.java)
+                    )
+                } else {
+                    startActivity(
+                        Intent(this@CitySelectActivity, InstructionsActivity::class.java)
+                    )
+                }
             }, 1000)
         }
 

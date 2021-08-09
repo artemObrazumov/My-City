@@ -3,6 +3,7 @@
     package="com.artem_obrazumov.mycity">
 
     <application
+        android:name=".MyCityApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -10,8 +11,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCity">
         <activity
+            android:name=".ui.reviewEditor.ReviewEditorActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.display.VideoDisplayActivity"
+            android:theme="@style/Theme.MyCity.NoActionBar"
+            android:exported="true" />
+        <activity
+            android:name=".ui.display.ImageDisplayActivity"
+            android:theme="@style/Theme.MyCity.NoActionBar"
+            android:exported="true" />
+        <activity
             android:name=".ui.instructions.InstructionsActivity"
-            android:theme="@style/Theme.MyCity.NoActionBar"/>
+            android:theme="@style/Theme.MyCity.NoActionBar" />
         <activity
             android:name=".ui.citySelect.CitySelectActivity"
             android:theme="@style/Theme.MyCity.NoActionBar" />
@@ -33,6 +45,7 @@
         <activity
             android:name=".ui.registration.RegistrationActivity"
             android:theme="@style/Theme.MyCity.NoActionBar" />
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
     </application>
 
 </manifest>

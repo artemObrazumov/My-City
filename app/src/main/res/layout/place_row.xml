@@ -16,6 +16,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:src="@drawable/ic_launcher_background"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,10 +34,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/place_description"
+            android:id="@+id/place_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="description\ndescription"
+            android:text="address"
             android:maxLines="2"
             android:layout_marginTop="4dp"
             android:layout_marginStart="8dp"
@@ -45,13 +46,13 @@
 
         <RatingBar
             android:id="@+id/place_rating"
+            style="@style/RatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@+id/place_image"
-            app:layout_constraintTop_toBottomOf="@+id/place_description"
-            style="@style/RatingBar"/>
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/place_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
